@@ -36,7 +36,7 @@ namespace Minesweeper
 
         if(getNode(node->x, node->y) != NULL)
         {
-            std::cout << "(fail) did not add Node(" << node->nodeCoordsAsText() << "): already existing" << std::endl;
+            std::cout << "(fail) did not add Node(" << Node::nodeCoordsAsText(node) << "): already existing" << std::endl;
             return false;
         }
 

@@ -14,10 +14,16 @@ namespace Minesweeper
 
     }
 
-    std::string Node::nodeCoordsAsText()
+    std::string Node::nodeCoordsAsText(Node* node)
+    {
+        return std::to_string(node->x) + "," + std::to_string(node->y);
+    }
+
+    std::string Node::coordsAsText(int x, int y)
     {
         return std::to_string(x) + "," + std::to_string(y);
     }
+
 
     double Node::getDistanceBetweenNodes(Node* node1, Node* node2)
     {

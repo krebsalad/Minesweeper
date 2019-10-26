@@ -28,7 +28,7 @@ int main()
     }
 
     //run game
-    if(!game.run())
+    if(!game.run(true))
     {
         std::cout << "game exited with an error" << std::endl;
     }

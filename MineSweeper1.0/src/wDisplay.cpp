@@ -1,5 +1,5 @@
 #include "./../include/wDisplay.h"
-
+#include "./../include/Node.h"
 
 namespace Minesweeper
 {
@@ -37,7 +37,13 @@ namespace Minesweeper
         node_width = _node_width;
         node_height = _node_height;
 
-        return createWindowOnCoords((GetSystemMetrics(SM_CXSCREEN) - width), (GetSystemMetrics(SM_CYSCREEN) - height));
+        //create window
+        bool succes = createWindowOnCoords((GetSystemMetrics(SM_CXSCREEN) - width), (GetSystemMetrics(SM_CYSCREEN) - height));
+
+        ShowWindow(hWnd, nCmdShow);																		
+        UpdateWindow(hWnd);
+
+        return succes;
     }				
     bool wDisplay::createWindowOnCoords(int x, int y)
     {
@@ -92,6 +98,8 @@ namespace Minesweeper
             return true;
         }
         return false;
+
+        ShowWindow(hWnd, nCmdShow);	
     }
 
     HWND* wDisplay::getWindowHandle()
@@ -99,7 +107,7 @@ namespace Minesweeper
         return &hWnd;
     }
 
-    bool wDisplay::updateNodes(NodeList &nodes, NodeList &reveleadNodes)
+    bool wDisplay::updateNodes(NodeList &reveleadNodes)
     {
         return true;
     }

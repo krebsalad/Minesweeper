@@ -19,7 +19,8 @@ namespace Minesweeper
                 Node(int _x, int _y);
                 ~Node();
 
-                std::string nodeCoordsAsText();
+                static std::string nodeCoordsAsText(Node* node);
+                static std::string coordsAsText(int x, int y);
                 static double getDistanceBetweenNodes(Node* node1, Node* node2);
     };
 };

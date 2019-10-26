@@ -13,7 +13,7 @@ namespace Minesweeper
 
             bool initDisplay(int _node_width, int _node_height);    
             bool run();
-            bool updateNodes(NodeList &nodes, NodeList &reveleadNodes);
+            bool updateNodes(NodeList &reveleadNodes);
 
         private:
             std::string frame;

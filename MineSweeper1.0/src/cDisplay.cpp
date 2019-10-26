@@ -27,7 +27,7 @@ namespace Minesweeper {
         return true;
     }
 
-    bool cDisplay::updateNodes(NodeList &nodes, NodeList &reveleadNodes)
+    bool cDisplay::updateNodes(NodeList &reveleadNodes)
     {
         //clear frame
         frame = "";
@@ -45,19 +45,17 @@ namespace Minesweeper {
             //3 * new line ascci character 
             for(int line = 0; line < 3; line++)
             {
-
                 //(7 * size_y) + 1 ascci character to draw line end with newline
                 for(int y = 0; y < node_height; y++)
                 {
-                    //get node
-                    Node* node = nodes.getNode(x, y);
-
                     //get node to draw
                     if(line == 0)
                     {
-                        std::string ntxt = node->nodeCoordsAsText();
+                        //print coords
+                        std::string ntxt = Node::coordsAsText(x, y);
                         frame += "|"+ntxt;
-                        //ensure the added text is a total of 7 string long (1 of which |)
+
+                        //ensure the added text is expected length
                         for(int t = 0; t < (6-ntxt.length()); t++)
                             frame += " ";
 
@@ -65,19 +63,30 @@ namespace Minesweeper {
                     }
                     
                     //check if revelealed
-                    if(line == 1 && reveleadNodes.getNode(x,y) != NULL)
+                    if(line == 1)
                     {
-                        frame += "|   " + node->myChar + "  ";
-                        continue;
+                        Node* node = reveleadNodes.getNode(x,y);
+                        //print character
+                        if(node != NULL)
+                        {
+                            frame += "|   " + node->myChar + "  ";
+                            continue;
+                        }
+
                     }
 
                     //check if revelealed
-                    if(line == 2 && reveleadNodes.getNode(x,y) != NULL)
+                    if(line == 2)
                     {
-                        frame += "|   ^  ";
-                        continue;
+                        //print character
+                        Node* node = reveleadNodes.getNode(x,y);
+                        if(node != NULL)
+                        {
+                            frame += "|   ^  ";
+                            continue;
+                        }
                     }
-
+                    //default
                     frame += "|      ";
                 }
                 frame += "|\n";

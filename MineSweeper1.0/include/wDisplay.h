@@ -5,6 +5,7 @@
 #include "./Display.h"
 #include <windows.h>
 #include <string>
+#include <map>
 
 namespace Minesweeper
 {
@@ -16,12 +17,10 @@ namespace Minesweeper
 
             bool initDisplay(int _node_width_x, int _node_width_y);			
             bool run();
-            bool updateNodes(NodeList &nodes, NodeList &reveleadNodes);
+            bool updateNodes(NodeList &reveleadNodes);
 
             LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);	
             HWND* getWindowHandle();
-
-
 
         private:
             bool createWindowOnCoords(int x, int y);
@@ -31,6 +30,10 @@ namespace Minesweeper
             HINSTANCE hInstance;
             int nCmdShow;
             std::string className;
+
+        private:
+            std::map<std::string, HWND> buttons;
+             
         };
 };
 

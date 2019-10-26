@@ -14,7 +14,7 @@ namespace Minesweeper
 
             virtual bool initDisplay(int _node_width, int _node_height) = 0;    
             virtual bool run() = 0;
-            virtual bool updateNodes(NodeList &nodes, NodeList &reveleadNodes) = 0;
+            virtual bool updateNodes(NodeList &reveleadNodes) = 0;
             bool isInitialized();
 
             //window vars

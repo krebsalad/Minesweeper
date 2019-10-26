@@ -46,7 +46,7 @@ namespace Minesweeper
 
     bool Game::run()
     {
-        return run(true);
+        return run(false);
     }
 
     bool Game::run(bool console_mode)
@@ -68,7 +68,7 @@ namespace Minesweeper
             }
 
             //update action in map
-            actionOnNode(input_val1,input_val2);
+            //actionOnNode(input_val1,input_val2);
 
             //update
             updateDisplays();
@@ -99,7 +99,7 @@ namespace Minesweeper
                 continue;
             }
 
-            if(!(*display_iter)->updateNodes(map->nodes, revealedNodes))
+            if(!(*display_iter)->updateNodes(revealedNodes))
             {
                 std::cout << "(fail) something went wrong when updating window "<< (*display_iter)->windowName <<" with new changes";
             }

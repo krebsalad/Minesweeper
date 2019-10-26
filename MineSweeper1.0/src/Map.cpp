@@ -126,7 +126,7 @@ namespace Minesweeper
                     num_of_adjacent_nodes++;                
                 }     
             }
-            std::cout << "(verbose) num of adjacent nodes for Node("<<(*node_iter)->nodeCoordsAsText()<<"): "<< num_of_adjacent_nodes << std::endl;    
+            std::cout << "(verbose) num of adjacent nodes for Node("<< Node::nodeCoordsAsText((*node_iter)) <<"): "<< num_of_adjacent_nodes << std::endl;    
         }
 
         std::cout << "(info) Update node adjacency list with max_distance: " << max_distance << std::endl;
