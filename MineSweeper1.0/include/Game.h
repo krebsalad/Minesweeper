@@ -1,23 +1,30 @@
 #ifndef  GAME_H_
 #define GAME_H_
 
-#include "./Map.h"
+#include "NodeList.h"
 
 namespace Minesweeper
 {
-    class Node;
+    class Map;
+    class Display;
 
     class Game 
     {
         public:
-            Map map;
+            Map* map;
+            std::list<Display*> displays;
             NodeList revealedNodes;
 
         public:
             Game();
             ~Game();
-            void run();
+            bool run();
+            bool run(bool console_mode);
+            bool init(int width, int heigth);
             bool actionOnNode(int x, int y);
+            void updateDisplays();
+            void showDisplays();
+            void addDisplay(Display* _display);
 
         private:
             void revealeNode(Node* node);

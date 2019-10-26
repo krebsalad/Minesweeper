@@ -17,16 +17,13 @@ namespace Minesweeper
             ~Map();     
 
             void initNodes();
-            void printNodes(NodeList &reveleadNodes);
             NodeList nodes;
 
         private:
             void generateNodes(); 
             void updateAdjacentNodes();
             void generateMineChars();
-            void updateNodeChars();
-
-            
+            void updateNodeChars();           
     };
 };
 

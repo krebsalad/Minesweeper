@@ -6,7 +6,7 @@ OBJ_DIR = $(PKG_DIR)./build
 
 # build flags
 CC = g++
-CXXFLAGS = -g -std=c++11
+CXXFLAGS = -g -std=c++11 -mwindows
 LIBRARIES = $()
 
 # objects and sources
@@ -15,11 +15,11 @@ DEPENDENCIES = $(addprefix $(INC_DIR)/,$(notdir $(INCLUDES:.cpp=.h)))
 SOURCES = $(wildcard $(SRC_DIR)/*.cpp main.cpp) 
 OBJECTS = $(addprefix $(OBJ_DIR)/,$(notdir $(SOURCES:.cpp=.o))) 
 
-EXEC_NAME = test1
+EXE = test1
 
 # Create executable
-$(EXEC_NAME): $(OBJECTS) 
-	$(CC) -o $(EXEC_NAME) $(OBJECTS)
+$(EXE): $(OBJECTS) 
+	$(CC) $(CXXFLAGS) -o $(EXE) $(OBJECTS) $(LIBRARIES)
 
 # build
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
@@ -32,4 +32,4 @@ $(OBJ_DIR)/main.o: main.cpp
 # clean files created by make
 clean:
 	rm $(OBJECTS)
-	rm $(EXEC_NAME)
+	rm $(EXE)

@@ -1,58 +1,126 @@
 #include "./../include/Game.h"
 #include "./../include/Node.h"
+#include "./../include/Display.h"
+#include "./../include/Map.h"
+
 #include <iostream>
 
 namespace Minesweeper
 {
 
     Game::Game()
-        : map(10, 10)
     {
-        std::cout << "(game) Starting mine sweeper game";
-        map.initNodes();
+        
     }
 
     Game::~Game()
     {
-
+        delete map;
     }
 
-    void Game::run()
+    void Game::addDisplay(Display* _display)
+    {
+        displays.push_back(_display);
+    }
+
+    bool Game::init(int _width, int _height)
+    {
+        //setup minesweeper
+        std::cout << "(game) Starting mine sweeper game";
+        map = new Map(_width, _height);
+        map->initNodes();
+        
+        //setup windows
+        bool succes = true;
+        for (std::list<Display*>::iterator display_iter = displays.begin(); display_iter != displays.end(); display_iter++)
+        {
+            if(!(*display_iter)->initDisplay(_width, _height))
+            {
+                succes = false;
+                std::cout << "(game) created window: " << (*display_iter)->windowName << std::endl;
+            }
+        }
+
+        return succes;
+    }
+
+    bool Game::run()
+    {
+        return run(true);
+    }
+
+    bool Game::run(bool console_mode)
     {
         //input values
         int input_val1;
         int input_val2;
 
-        //ask for node to click
-        std::cout << "(game) Choose node to start game on\n";
-        std::cout << "(action) Type a value x: ";
-        std::cin >> input_val1;
-        std::cout << "\n(action) Type a value y: ";
-        std::cin >> input_val2;
-        std::cout << "\n";
-
-        while(actionOnNode(input_val1,input_val2))
+        while(true)
         {
-            map.printNodes(revealedNodes);
-
-            //check if done
-            if(revealedNodes.nodeCount() == (map.nodes.nodeCount() - map.max_num_of_mines))
+            //get input
+            if(console_mode)
             {
-                std::cout << "(event) found all mines";
-                std::cout << "(game) Game won!!";
-                return;
+                std::cout << "(action) Type a value x of to open box: ";
+                std::cin >> input_val1;
+                std::cout << "\n(action) Type a value y of to open box: ";
+                std::cin >> input_val2;
+                std::cout << "\n";  
             }
 
-            //ask for node to click
-            std::cout << "(action) Type a value x of to open box: ";
-            std::cin >> input_val1;
-            std::cout << "\n(action) Type a value y of to open box: ";
-            std::cin >> input_val2;
-            std::cout << "\n";         
+            //update action in map
+            actionOnNode(input_val1,input_val2);
+
+            //update
+            updateDisplays();
+
+            //show
+            showDisplays();
+
+            //check if done
+            if(revealedNodes.nodeCount() == (map->nodes.nodeCount() - map->max_num_of_mines))
+            {
+                std::cout << "(event) found all mines" << std::endl;
+                std::cout << "(game) Game won!!" << std::endl;
+                return true;;
+            }       
         } 
 
         std::cout << "(game) Game lost!";
-        return;
+        return true;
+    }
+
+    void Game::updateDisplays()
+    {
+        for (std::list<Display*>::iterator display_iter = displays.begin(); display_iter != displays.end(); display_iter++)
+        {
+            if(!(*display_iter)->isInitialized())
+            {
+                std::cout << "(fail) window " << (*display_iter)->windowName << " is not initalized" << std::endl;
+                continue;
+            }
+
+            if(!(*display_iter)->updateNodes(map->nodes, revealedNodes))
+            {
+                std::cout << "(fail) something went wrong when updating window "<< (*display_iter)->windowName <<" with new changes";
+            }
+        }
+    }
+
+    void Game::showDisplays()
+    {
+        for (std::list<Display*>::iterator display_iter = displays.begin(); display_iter != displays.end(); display_iter++)
+        {
+            if(!(*display_iter)->isInitialized())
+            {
+                std::cout << "(fail) window " << (*display_iter)->windowName << " is not initalized";
+                continue;
+            }
+
+            if(!(*display_iter)->run())
+            {
+                std::cout << "(fail)  something went wrong when running the window" <<(*display_iter)->windowName << std::endl;
+            }
+        }
     }
 
     void Game::revealeNode(Node* node)
@@ -84,11 +152,11 @@ namespace Minesweeper
     bool Game::actionOnNode(int x, int y)
     {
         //setup nodes
-        map.nodes.unmarkNodes();
+        map->nodes.unmarkNodes();
 
         //get target node
         std::cout << "(event) Open Node action on Node (" << x << "," << y << ")" << std::endl;
-        Node* target_node = map.nodes.getNode(x, y);
+        Node* target_node = map->nodes.getNode(x, y);
 
         //quit if already reaveled
         if(revealedNodes.getNode(x, y) != NULL)
