@@ -48,7 +48,7 @@ class uNode
 
         //2d util
         static std::string coordsToId(int x, int y);
-        static std::string coordsToId(int x, int y, int z);
+        static std::string coordsToId(int x, int y, int z);  
         static const uNode& getNode(int x, int y, int z);
         static void createNodes2d(int sx, int sy);
         static const uNode& getNode2d(int x, int y);

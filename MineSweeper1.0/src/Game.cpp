@@ -174,44 +174,46 @@ namespace Minesweeper
 
     void Game::printNodes()
     {
-        
         std::string txt = "";
+        int str_width = 12;
+        int str_height = 4;
+
         for (int x = 0; x < size_x; x++)
         {
-            //(7 * size_y) + 1 ascci character to draw line end with newline
-            for(int y =0; y < size_y; y++)
-            {
-                txt += "+---------";
+            //draw +----+----+ ... then new line to draw the node
+            for(int y = 0; y < size_y; y++)
+            {     
+                txt += "+";
+                for(int t = 0; t < (str_width-1); t++)
+                    txt += "-";
             }
             txt += "+\n";
             
-
-            //3 * new line ascci character 
-            for(int line = 0; line < 3; line++)
+            //draw lines |stuff here|stuff here| ...
+            for(int line = 0; line < str_height; line++)
             {
-
-                //(7 * size_y) + 1 ascci character to draw line end with newline
                 for(int y = 0; y < size_y; y++)
                 {
                     //find node in revealed nodes
                     std::string nodeId = uNode::coordsToId(x, y);
                     std::list<std::string>::iterator nodeId_iter = std::find (reveleadNodes.begin(), reveleadNodes.end(), nodeId);
+                    
+                    //always start with
                     std::string ntxt = "|";
 
-                    //get node to draw
+                    //show node id on first line
                     if(line == 0)
-                    {
-                        
-                        ntxt += ""+nodeId;
+                    {  
+                        ntxt += nodeId;
                     }
                     
-                    //check if revelealed
+                    //print value if revealed
                     if(line == 1 && nodeId_iter != reveleadNodes.end())
                     {
                         ntxt += "    " + std::to_string((int)uNode::getNode(nodeId).transform.z);
                     }
 
-                    //check if revelealed
+                    //show revealed
                     if(line == 2 && nodeId_iter != reveleadNodes.end())
                     {
                         ntxt += "    ^";
@@ -219,17 +221,20 @@ namespace Minesweeper
 
                     //ensure the added text is a total of 7 string long (1 of which |)
                     txt += ntxt;
-                    for(int t = 0; t < (10-ntxt.length()); t++)
+                    for(int t = 0; t < (str_width-ntxt.length()); t++)
                         txt += " ";
                 }
+                //end with | and new line
                 txt += "|\n";
             }   
         }
 
-        // draw last line
+        //draw final +----+----+ ... then new line
         for(int y =0; y < size_y; y++)
         {
-            txt += "+------";
+            txt += "+";
+            for(int t = 0; t < (str_width-1); t++)
+                    txt += "-";
         }
         txt += "+\n"; 
 
