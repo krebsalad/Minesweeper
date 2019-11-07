@@ -1,18 +1,24 @@
 #include "./include/uNode.h"
 #include "./include/Game.h"
+#include "./include/DisplayGL.h"
 #include <iostream>
 
 int main(int argc, const char** argv) {
+    //create game object
+    Minesweeper::Game g(9,9,new Minesweeper::DisplayGL(1280, 720, "Minesweeper window"));
 
-    //uNode::createNodes2d(10, 10);
-    //uNode node = uNode::getNode2d(5,5);
-    //std::cout << "adjacency list for node " << node.nodeId << std::endl;
-    
+    //init window and nodes
+    if(!g.init())
+    {
+        return 0;
+    }
 
-    Minesweeper::Game g(20,20);
-    g.init();
+    //run the game
     g.run();
     
+    std::cout << "exiting game" << std::endl;
     return 0;
 }
+
+
 
